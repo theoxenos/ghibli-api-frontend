@@ -1,0 +1,1 @@
+export {FilmsList} from './components/FilmsList';
