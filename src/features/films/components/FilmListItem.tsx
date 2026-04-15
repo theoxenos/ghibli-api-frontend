@@ -1,6 +1,7 @@
 import type {Film} from "../types/Film.ts";
 import FilmListItemBadge from "./FilmListItemBadge.tsx";
 import styles from "./FilmListItem.module.css";
+import {Link} from "react-router-dom";
 
 const FilmListItem = ({film}: { film: Film }) => (
     <div className="card mb-4">
@@ -16,6 +17,9 @@ const FilmListItem = ({film}: { film: Film }) => (
         <div className="card-body">
             <h5 className="card-title">{film.title}</h5>
             <p className={`card-text ${styles['line-clamp-3']}`}>{film.description}</p>
+        </div>
+        <div className="card-footer text-end">
+            <Link to={`/films/${film.id}`} className="btn btn-primary">Detail</Link>
         </div>
     </div>
 );

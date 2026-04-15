@@ -1,0 +1,15 @@
+.banner-header {
+    /*background-position-y: center;*/
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 500px;
+}
+
+.poster-container {
+    /*position: relative;*/
+    /*transform: translateY(-50%);*/
+    display: flex;
+    height: 450px;
+    max-width: max-content !important;
+    width: 300px;
+}

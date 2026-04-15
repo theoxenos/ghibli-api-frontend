@@ -18,8 +18,6 @@ export const FilmsList = () => {
         void fetchAllFilms();
     }, []);
 
-
-
     return (
         <div className="container-xxl py-3">
             <div className="row row-cols-lg-4">
