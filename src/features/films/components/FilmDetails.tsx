@@ -45,7 +45,7 @@ export const FilmDetails = () => {
                                     Rotten Tomatoes: {data?.rtScore !== undefined ? `${data?.rtScore}%` : 'N/A'}
                                 </span>
                                 <span className="badge bg-primary">
-                                    Running Time: {formatRunningTime(data?.runningTime)} mins
+                                    Running Time: {formatRunningTime(data?.runningTime)}
                                 </span>
                             </div>
                             <p className="lead">{data?.description}</p>
