@@ -12,7 +12,6 @@ export const useFetch = <T>(url: string) => {
             setLoading(true);
             try {
                 const response = await fetch(url, {signal: controller.signal});
-                console.log(response)
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const json: T = await response.json();
                 setData(json);

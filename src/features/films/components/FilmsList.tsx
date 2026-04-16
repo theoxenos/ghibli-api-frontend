@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import filmsService from "../services/filmsService.ts";
+import filmService from "../services/filmService.ts";
 import type {Film} from "../types/Film.ts";
 import FilmListItem from "./FilmListItem.tsx";
 
@@ -9,7 +9,7 @@ export const FilmsList = () => {
     useEffect(() => {
         const fetchAllFilms = async () => {
             try {
-                const films = await filmsService.getAllFilms();
+                const films = await filmService.getAllFilms();
                 setFilms(films);
             } catch (error) {
                 console.error('Error fetching films:', error);
