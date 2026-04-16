@@ -149,9 +149,6 @@ export const FilmDetails = () => {
                         </ul>
                     </div>
                 </div>
-                <div className="row">
-
-                </div>
             </div>
         </>
     );
