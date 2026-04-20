@@ -1,4 +1,4 @@
-import type {Film} from "../types/Film.ts";
+import type {Film} from "../types";
 import FilmListItemBadge from "./FilmListItemBadge.tsx";
 import styles from "./FilmListItem.module.css";
 import {Link} from "react-router-dom";

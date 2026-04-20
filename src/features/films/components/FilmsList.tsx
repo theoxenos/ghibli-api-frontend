@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
 import filmService from "../services/filmService.ts";
-import type {Film} from "../types/Film.ts";
+import type {Film} from "../types";
 import FilmListItem from "./FilmListItem.tsx";
+import InputGroup from 'react-bootstrap/InputGroup';
 
 export const FilmsList = () => {
     const [films, setFilms] = useState<Film[]>([]);
