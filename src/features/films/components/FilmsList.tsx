@@ -78,7 +78,7 @@ export const FilmsList = () => {
                     if (sortOption === FilmSortOption.RunningTime) return a.runningTime - b.runningTime;
                     return 0;
                 }).map(film => (
-                    <div key={film.id} className="col">
+                    <div key={film.id} className="col mb-3">
                         <FilmListItem film={film}/>
                     </div>)) : 'Loading...'}
             </div>

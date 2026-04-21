@@ -4,7 +4,7 @@ import styles from "./FilmListItem.module.css";
 import {Link} from "react-router-dom";
 
 const FilmListItem = ({film}: { film: Film }) => (
-    <div className="card mb-4">
+    <div className="card h-100">
         <img src={film.image} className="card-img-top" alt={`${film.title} poster`}/>
         <div style={{height: '50px', width: '100%'}}
              className="d-flex justify-content-center align-items-center gap-0 gap-lg-3 bg-light"
