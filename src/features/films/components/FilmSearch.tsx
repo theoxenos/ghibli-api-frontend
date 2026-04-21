@@ -22,8 +22,8 @@ const FilmSearch = (
                         value={searchOption}
                         onChange={handleSearchOptionChange}>
                     {/*<option value="all">All</option>*/}
-                    {Object.keys(FilmSearchOption).map(key => (
-                        <option key={key} value={FilmSearchOption[key]}>{key}</option>
+                    {Object.entries(FilmSearchOption).map(([key, value]) => (
+                        <option key={key} value={value}>{key}</option>
                     ))}
                 </select>
                 <input id="searchTerm" type="text" className="form-control" placeholder="Search"
