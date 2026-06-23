@@ -1,28 +1,30 @@
 const endPoint = '/api/films';
 
-const getAllFilms = async (title?: string, director?: string, producer?: string) => {
-    const params = new URLSearchParams();
-    if (title) params.append('title', title);
-    if (director) params.append('director', director);
-    if (producer) params.append('producer', producer);
+const buildQueryParams = (params: Record<string, string | undefined>): URLSearchParams => {
+    const urlParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+        if (value) urlParams.append(key, value);
+    });
+    return urlParams;
+};
 
-    const response = await fetch(`${endPoint}?${params}`);
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch films');
-    }
-
+const fetchApi = async (url: string, error?: string, options?: RequestInit) => {
+    const response = await fetch(url, options);
+    if (!response.ok) throw new Error(error || `HTTP error! status: ${response.status}`);
     return response.json();
 };
 
+const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+const getAllFilms = async (title?: string, director?: string, producer?: string) => {
+    await wait(5_000);
+    const params = buildQueryParams({title, director, producer});
+
+    return fetchApi(`${endPoint}?${params}`);
+};
+
 const getFilmById = async (id: string) => {
-    const response = await fetch(`${endPoint}/${id}`);
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch film');
-    }
-
-    return response.json();
+    return fetchApi(`${endPoint}/${id}`);
 };
 
 export default {getAllFilms, getFilmById};

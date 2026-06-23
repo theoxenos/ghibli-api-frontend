@@ -6,3 +6,7 @@ const FilmListItemBadge =
     );
 
 export default FilmListItemBadge;
+
+export const FilmListItemBadgeSkeleton = () => <span className="text-body-emphasis col-2">
+    <span className="placeholder w-100"></span>
+</span>;

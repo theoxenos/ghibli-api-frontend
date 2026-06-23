@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from "react";
-import filmService from "../services/filmService.ts";
+import {type ChangeEvent, type SubmitEvent, Suspense, useState} from "react";
 import {
     type Film,
     FilmSearchOption,
@@ -9,40 +8,30 @@ import {
     type TFilmSearchOption,
     type TFilmSortOption
 } from "../types";
-import FilmListItem from "./FilmListItem.tsx";
+import FilmListItem, {FilmListItemSkeleton} from "./FilmListItem.tsx";
 import FilmSortDropdownMenu from "./FilmSortDropdownMenu.tsx";
 import FilmSearch from "./FilmSearch.tsx";
+import {Await, useLoaderData} from "react-router-dom";
+import SkeletonList from "../../../shared/components/SkeletonList.tsx";
 
 export const FilmsList = () => {
-    const [films, setFilms] = useState<Film[]>([]);
+    const {filmsPromise} = useLoaderData();
+
     const [searchOption, setSearchOption] = useState<TFilmSearchOption>(FilmSearchOption.Title);
     const [searchTerm, setSearchTerm] = useState('');
     const [sortOption, setSortOption] = useState<TFilmSortOption>(FilmSortOption.Date);
 
-    const fetchFilms = async (title?: string, director?: string, producer?: string): Promise<Film[]> => {
-        try {
-            return await filmService.getAllFilms(title, director, producer);
-        } catch (error) {
-            console.error('Error fetching films:', error);
-            return [];
-        }
-    };
-
-    useEffect(() => {
-        void fetchFilms().then(setFilms);
-    }, []);
-
-    const handleSearchOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleSearchOptionChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const {value} = event.target;
         if (isFilmSearchOption(value)) setSearchOption(value);
     };
 
-    const handleSortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSortChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {value} = event.target;
         if (isFilmSortOption(value)) setSortOption(value);
     };
 
-    const handleSearch = async (event: React.SubmitEvent<HTMLFormElement>) => {
+    const handleSearch = async (event: SubmitEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const term = searchTerm.trim() ? searchTerm : undefined;
@@ -51,7 +40,8 @@ export const FilmsList = () => {
             searchOption === FilmSearchOption.Director ? term : undefined,
             searchOption === FilmSearchOption.Producer ? term : undefined,
         ];
-        setFilms(await fetchFilms(...args));
+        // setFilms(await fetchFilms(...args));
+        throw new Error('Not implemented');
     };
 
     return (
@@ -71,17 +61,32 @@ export const FilmsList = () => {
                 </div>
             </div>
             <div className="row row-cols-lg-4">
-                {films ? films.sort((a, b) => {
-                    if (sortOption === FilmSortOption.Title) return a.title.localeCompare(b.title);
-                    // if (sortOption === 'date') return new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime();
-                    if (sortOption === FilmSortOption.Date) return new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime();
-                    if (sortOption === FilmSortOption.RunningTime) return a.runningTime - b.runningTime;
-                    return 0;
-                }).map(film => (
-                    <div key={film.id} className="col mb-3">
-                        <FilmListItem film={film}/>
-                    </div>)) : 'Loading...'}
+                <Suspense fallback={<FilmListFallback/>}>
+                    <Await resolve={filmsPromise}>
+                        {(films: Film[]) => (
+                            films.sort((a, b) => {
+                                if (sortOption === FilmSortOption.Title) return a.title.localeCompare(b.title);
+                                // if (sortOption === 'date') return new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime();
+                                if (sortOption === FilmSortOption.Date) return new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime();
+                                if (sortOption === FilmSortOption.RunningTime) return a.runningTime - b.runningTime;
+                                return 0;
+                            }).map(film => (
+                                <div key={film.id} className="col mb-3">
+                                    <FilmListItem film={film}/>
+                                </div>
+                            ))
+                        )}
+                    </Await>
+                </Suspense>
             </div>
         </div>
     );
 };
+
+const FilmListFallback = () => (
+    <SkeletonList amount={8}>
+        <div className="col mb-3">
+            <FilmListItemSkeleton/>
+        </div>
+    </SkeletonList>
+);
