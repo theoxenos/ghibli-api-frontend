@@ -1,13 +1,5 @@
-import {type ChangeEvent, type SubmitEvent, Suspense, useState} from "react";
-import {
-    type Film,
-    FilmSearchOption,
-    FilmSortOption,
-    isFilmSearchOption,
-    isFilmSortOption,
-    type TFilmSearchOption,
-    type TFilmSortOption
-} from "../types";
+import {type ChangeEvent, Suspense, useState} from "react";
+import {type Film, FilmSortOption, isFilmSortOption, type TFilmSortOption} from "../types";
 import FilmListItem, {FilmListItemSkeleton} from "./FilmListItem.tsx";
 import FilmSortDropdownMenu from "./FilmSortDropdownMenu.tsx";
 import FilmSearch from "./FilmSearch.tsx";
@@ -15,46 +7,20 @@ import {Await, useLoaderData} from "react-router-dom";
 import SkeletonList from "../../../shared/components/SkeletonList.tsx";
 
 export const FilmsList = () => {
-    const {filmsPromise} = useLoaderData();
+    const {filmsPromise, searchParams: {searchTerm, searchOption}} = useLoaderData();
 
-    const [searchOption, setSearchOption] = useState<TFilmSearchOption>(FilmSearchOption.Title);
-    const [searchTerm, setSearchTerm] = useState('');
     const [sortOption, setSortOption] = useState<TFilmSortOption>(FilmSortOption.Date);
-
-    const handleSearchOptionChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        const {value} = event.target;
-        if (isFilmSearchOption(value)) setSearchOption(value);
-    };
 
     const handleSortChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {value} = event.target;
         if (isFilmSortOption(value)) setSortOption(value);
     };
 
-    const handleSearch = async (event: SubmitEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        const term = searchTerm.trim() ? searchTerm : undefined;
-        const args: [string?, string?, string?] = [
-            searchOption === FilmSearchOption.Title ? term : undefined,
-            searchOption === FilmSearchOption.Director ? term : undefined,
-            searchOption === FilmSearchOption.Producer ? term : undefined,
-        ];
-        // setFilms(await fetchFilms(...args));
-        throw new Error('Not implemented');
-    };
-
     return (
         <div className="container-xxl py-3">
             <div className="row mb-3 justify-content-between">
                 <div className="col col-10">
-                    <FilmSearch
-                        searchOption={searchOption}
-                        searchTerm={searchTerm}
-                        setSearchTerm={setSearchTerm}
-                        handleSearch={handleSearch}
-                        handleSearchOptionChange={handleSearchOptionChange}
-                    />
+                    <FilmSearch searchTerm={searchTerm} searchOption={searchOption}/>
                 </div>
                 <div className="col-2" style={{textAlign: 'right'}}>
                     <FilmSortDropdownMenu sortOption={sortOption} handleSortChange={handleSortChange}/>
