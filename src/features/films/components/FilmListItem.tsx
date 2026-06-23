@@ -29,7 +29,7 @@ export default FilmListItem;
 
 export const FilmListItemSkeleton = () => (
     <div className="card h-100">
-        <img src="https://placehold.co/600x900" className="card-img-top" alt="Film poster placeholder"/>
+        <img src="https://placehold.co/600x900?text=Loading..." className="card-img-top" alt="Film poster placeholder"/>
         <div style={{height: '50px', width: '100%'}}
              className="d-flex justify-content-center align-items-center gap-0 gap-lg-3 bg-light"
         >

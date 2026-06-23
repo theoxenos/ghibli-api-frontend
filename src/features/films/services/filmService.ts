@@ -17,13 +17,14 @@ const fetchApi = async (url: string, error?: string, options?: RequestInit) => {
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const getAllFilms = async (title?: string, director?: string, producer?: string) => {
-    await wait(5_000);
+    if (import.meta.env.VITE_API_DELAY) await wait(Number(import.meta.env.VITE_API_DELAY));
     const params = buildQueryParams({title, director, producer});
 
     return fetchApi(`${endPoint}?${params}`);
 };
 
 const getFilmById = async (id: string) => {
+    if (import.meta.env.VITE_API_DELAY) await wait(Number(import.meta.env.VITE_API_DELAY));
     return fetchApi(`${endPoint}/${id}`);
 };
 
